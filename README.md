@@ -1,11 +1,6 @@
 
 # Tharwa
 
-> **Track / Program:** [Insert Training Program Name Here]  
-> **Cohort:** [Insert Cohort Name/Number Here]  
-> **Trainee Name:** Sara  
-> **Institution:** King Saud University (KSU) - College of Computer and Information Sciences  
-
 ---
 
 ## 🌟 Project Description
@@ -70,9 +65,15 @@ ___
 - **Program :** Building Agentic AI Systems
 - **Trainer :** Mohammed Albelad
 - **Presented By :** SDAIA Academy
-
+  
   SDAIA Academy GitHub :
   https://github.com/SDAIAAcademy
   
-
+___
+## Team 
+- Sarah Al Sa’ed
+- Noura Alfaadhel
+- Joud Aldawsari
+- Norah AlJuwair
+- Reema 
 
