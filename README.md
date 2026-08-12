@@ -17,23 +17,24 @@
 
 Tharwa follows a **Multi-Agent Orchestration** pattern, where specialized agents collaborate to provide tailored financial insights.
 
-```mermaid
-graph TD
-    User[User Input] --> Interface[Streamlit UI]
-    Interface --> Orchestrator[Orchestrator Agent]
-    
-    subgraph Agents["Intelligent Agent Layer"]
-        Orchestrator --> DataAgent[Data Ingestion Agent]
-        Orchestrator --> RiskAgent[Risk Analysis Agent]
-        Orchestrator --> ComplianceAgent[Regulatory Guard Agent]
-    end
-    
-    DataAgent --> MarketData[(Market Data API)]
-    RiskAgent --> UserProfile[(User Profile DB)]
-    ComplianceAgent --> RegDB[(CMA Regulations DB)]
-    
-    DataAgent & RiskAgent & ComplianceAgent --> Orchestrator
-    Orchestrator --> Output[Asset Allocation Strategy]
-
-
-
+```text
++-------------------------------------------------------------------------+
+|                              USER INTERFACE                             |
+|                           [ Streamlit UI App ]                          |
++-------------------------------------------------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------------+
+|                      INTELLIGENT AGENT ORCHESTRATOR                     |
+|                                                                         |
+|  [1. Data Ingestion]   [2. Risk Analysis]   [3. Regulatory Guard]       |
+|          |                     |                      |                 |
+|          v                     v                      v                 |
+|  [(Market Data API)]    [(User Profile DB)]   [(CMA Regulations)]       |
++-------------------------------------------------------------------------+
+                                     |
+                                     v
++-------------------------------------------------------------------------+
+|                       FINAL OUTPUT & STRATEGY                           |
+|                    [ Custom Asset Allocation ]                          |
++-------------------------------------------------------------------------+
