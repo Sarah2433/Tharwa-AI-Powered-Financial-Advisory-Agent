@@ -1,24 +1,48 @@
 # Tharwa — AI-Powered Financial Advisory Agent
 
-Tharwa is a multi-agent system built with LangChain and LangGraph that analyzes market data, evaluates investment options, and proposes a personalized asset allocation based on the user's risk tolerance and investment goal.
+The Tharwa project is a cutting-edge breakthrough in FinTech. The core idea is to build a Multi-Agent AI System that goes beyond generic advice, acting as an independent digital financial advisor that makes data-driven investment decisions tailored to each user's risk appetite and investment goals.
 
 ## Overview
 
 The user provides an amount, a risk level, and an investment goal. A supervisor agent routes the request through specialized sub-agents — Market Analysis, Financial Analysis, and Risk Analysis — running in parallel. Their outputs feed into a Portfolio Allocation agent, which checks its recommendation against Saudi investment regulations via a Regulatory Compliance agent before requesting explicit human approval and returning a final recommendation.
 
-## Architecture
-User → Supervisor Agent
-├── Market Analysis Agent
-├── Financial Analysis Agent
-└── Risk Analysis Agent
-↓
-Portfolio Allocation Agent
-↓
-Regulatory Compliance Agent
-↓
-Human Approval
-↓
-Final Recommendation
+# Tharwa
+
+> **Track / Program:** [Insert Training Program Name Here]  
+> **Cohort:** [Insert Cohort Name/Number Here]  
+> **Trainee Name:** Sara  
+> **Institution:** King Saud University (KSU) - College of Computer and Information Sciences  
+
+---
+
+## 🌟 Project Description
+**Tharwa** is an agentic AI system specifically designed to assist market investors in making informed, data-driven investment decisions. The system analyzes market indicators, evaluates available assets, and matches them with the user's personal profile and risk level to deliver customized asset allocation recommendations while maintaining strict adherence to local regulatory frameworks.
+
+---
+
+## 🏗️ System Architecture
+
+Tharwa follows a **Multi-Agent Orchestration** pattern, where specialized agents collaborate to provide tailored financial insights.
+
+```mermaid
+graph TD
+    User[User Input] --> Interface[Streamlit UI]
+    Interface --> Orchestrator[Orchestrator Agent]
+    
+    subgraph Agents["Intelligent Agent Layer"]
+        Orchestrator --> DataAgent[Data Ingestion Agent]
+        Orchestrator --> RiskAgent[Risk Analysis Agent]
+        Orchestrator --> ComplianceAgent[Regulatory Guard Agent]
+    end
+    
+    DataAgent --> MarketData[(Market Data API)]
+    RiskAgent --> UserProfile[(User Profile DB)]
+    ComplianceAgent --> RegDB[(CMA Regulations DB)]
+    
+    DataAgent & RiskAgent & ComplianceAgent --> Orchestrator
+    Orchestrator --> Output[Asset Allocation Strategy]
+
+
 
 ## Key Features
 
