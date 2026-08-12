@@ -42,7 +42,7 @@ Tharwa follows a **Multi-Agent Orchestration** pattern, where specialized agents
 
 ```
 ---
-##Architecture Components
+## Architecture Components
 -**Orchestrator Agent / Supervisor:** Routes user requests dynamically between specialized agents (Market Analysis, Portfolio Allocation, and Regulatory Compliance).
 
 -  **Data Ingestion & Market Engine:** Connects to real-time financial tools (⁠yfinance⁠ and ⁠TavilySearch⁠) to fetch live stock prices, P/E ratios, market caps, and financial news.
