@@ -63,7 +63,7 @@ ___
 
 ## Program Attribution 
 - **Program :** Building Agentic AI Systems
-- **Trainer :** Mohammed Albelad
+- **Trainer :** Mohammed Albeladi
 - **Presented By :** SDAIA Academy
   
   SDAIA Academy GitHub :
