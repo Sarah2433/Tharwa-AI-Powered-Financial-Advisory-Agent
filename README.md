@@ -75,5 +75,5 @@ ___
 - Sarah Al Sa’ed
 - Reema Alhawassi
 - Joud Aldawsari
-- Norah AlJuwair
+- Norah Aljower
 
