@@ -1,17 +1,19 @@
-# 🪙 Tharwa (ثروة) - Financial Advisory & Compliance Agent System
-
-> **Student Name:** [Your Full Name]  
-> **SDAIA Programme:** Advanced Agentic AI Systems Engineering  
-> **Declared Track:** Track A: Finance & Compliance  
-> **Date:** August 2026  
-
-Tharwa is an intelligent, multi-agent financial advisory platform built with **LangGraph**, **LangChain**, and **Google Gemini**[span_0](start_span)[span_0](end_span). It features an **Evaluator-Optimizer compliance engine** grounded in Saudi Capital Market Authority (CMA) regulations, combined with real-time market data analysis, stateful user memory, and Human-in-the-Loop (HITL) authorization guardrails[span_1](start_span)[span_1](end_span).
+# Technical Documentation
+## Tharwa (ثروة) – Advanced Agentic AI Financial Advisory & Compliance System
 
 ---
 
-## 📐 Architecture Overview
+# 1. System Overview
 
-The system utilizes a **Multi-Agent Supervisor Pattern** to route queries dynamically and manage execution state across specialized worker agents[span_2](start_span)[span_2](end_span):
+**Tharwa (ثروة)** is an agentic AI financial advisory platform designed to deliver personalized investment strategies while enforcing automated regulatory compliance. Built for the Saudi financial ecosystem, it grounds asset allocations in Saudi Capital Market Authority (CMA) guidelines.
+
+The system uses a LangGraph-based multi-agent supervisor architecture composed of stateful nodes representing specialized domain agents. It integrates Large Language Models (LLMs), dense retrieval-augmented generation (RAG), evaluator-optimizer control loops, and Human-in-the-Loop (HITL) authorization to generate compliant portfolio plans and real-time market insights.
+
+---
+
+# 2. Architecture
+
+The system follows a multi-agent supervisor pattern implemented with LangGraph. Queries are routed dynamically by a central supervisor, and compliance evaluations are iteratively optimized before reaching human approval.
 
 ```
                        ┌─────────────────────────┐
@@ -30,7 +32,7 @@ The system utilizes a **Multi-Agent Supervisor Pattern** to route queries dynami
 │ Market Analysis Node│  │   Portfolio Node    │  │   Compliance Node   │
 └──────────┬──────────┘  └──────────┬──────────┘  └──────────┬──────────┘
            │                        │                        │
-           │ (Tools)                │ (Tools)                │ (Tools & RAG)
+           │ (Tools)                │ (Tools)                │ (Evaluator-Optimizer RAG)
            │ • get_stock_price      │ • propose_allocation   │ • search_regulations
            │ • get_fundamentals     │                        │ • evaluate_compliance
            │ • tavily_search        │                        │ • optimize_strategy
@@ -42,6 +44,17 @@ The system utilizes a **Multi-Agent Supervisor Pattern** to route queries dynami
                        │ Human Approval Interrupt│ (HITL Guardrail)
                        └────────────┬────────────┘
                                     │
+                        ┌───────────┴───────────┐
+                        │                       │
+                    Approved                Rejected
+                        │                       │
+                        ▼                       ▼
+           ┌────────────────────────┐┌────────────────────────┐
+           │ Finalize & Save State  ││    Cancel Request      │
+           └───────────┬────────────┘└───────────┬────────────┘
+                       │                         │
+                       └────────────┬────────────┘
+                                    │
                                     ▼
                        ┌─────────────────────────┐
                        │        END Node         │
@@ -50,76 +63,191 @@ The system utilizes a **Multi-Agent Supervisor Pattern** to route queries dynami
 
 ---
 
-## 🛠️ Key Components & Modules
+# 3. Graph Nodes & Sub-Agents
 
-### 1. **Supervisor Agent**
-* Routes user queries based on intent (`market_analysis`, `portfolio_planning`, `compliance_check`)[span_3](start_span)[span_3](end_span).
-* Coordinates intermediate agent execution outputs into a cohesive final response[span_4](start_span)[span_4](end_span).
+## Node 1 — Supervisor Agent
 
-### 2. **Market Analysis Agent**
-* `get_stock_price`: Fetches price history via `yfinance`[span_5](start_span)[span_5](end_span).
-* `get_company_fundamentals`: Retrieves key company financial metrics and valuations[span_6](start_span)[span_6](end_span).
-* `tavily_search`: Searches for real-time news and market updates[span_7](start_span)[span_7](end_span).
+**Purpose**
 
-### 3. **Portfolio Agent**
-* `propose_allocation`: Constructs tailored asset allocation models based on risk tolerance, financial goals, and target horizons[span_8](start_span)[span_8](end_span).
+Analyzes incoming user intent, coordinates execution between specialized agents, and aggregates intermediate responses into unified system outputs.
 
-### 4. **Compliance Agent (Evaluator-Optimizer RAG Engine)**
-* `search_regulations`: Executes dense semantic vector search over chunked Saudi CMA regulatory documents using `paraphrase-multilingual-mpnet-base-v2` and `Chroma`[span_9](start_span)[span_9](end_span).
-* `evaluate_compliance`: Evaluates proposed portfolios for regulatory breaches (e.g., maximum 60% asset class concentration cap)[span_10](start_span)[span_10](end_span).
-* `optimize_strategy`: Iteratively adjusts portfolios to reach 100% compliance before output generation[span_11](start_span)[span_11](end_span).
+**Input**
 
-### 5. **Human-in-the-Loop (HITL) Guardrail**
-* Employs LangGraph's `interrupt()` function to pause execution before finalizing high-value investments or allocation changes until human authorization is received via `Command(resume=...)`[span_12](start_span)[span_12](end_span).
+- `messages` (Conversation state / User Query)
 
-### 6. **Memory & State Persistence Layer**
-* **Short-Term Checkpointer**: `InMemorySaver` tracks conversational context within thread turns[span_13](start_span)[span_13](end_span).
-* **Long-Term Memory**: `InMemoryStore` records long-term user risk profiles across different sessions[span_14](start_span)[span_14](end_span).
+**Output**
+
+- Dynamic routing handoff or final response synthesis
 
 ---
 
-## ⚙️ Configuration & Setup
+## Node 2 — Market Analysis Agent
 
-### **Prerequisites**
+**Purpose**
 
-* Python 3.10+
-* Virtual Environment (`venv` or `conda`)
+Retrieves financial metrics, historical price performance, and news updates for assets.
 
-### **1. Installation**
+**Tools & Integrations**
 
-Clone the repository and install the dependencies:
+- `get_stock_price`: Fetches price history via `yfinance`.
+- `get_company_fundamentals`: Retrieves company valuation metrics and financial statements.
+- `tavily_search`: Performs real-time web searches for market news.
 
-```bash
-git clone [https://github.com/your-username/tharwa-financial-agent.git](https://github.com/your-username/tharwa-financial-agent.git)
-cd tharwa-financial-agent
-pip install -r requirements.txt
+---
+
+## Node 3 — Portfolio Agent
+
+**Purpose**
+
+Constructs customized asset allocation strategies based on investor demographics, risk profiles, and investment horizons.
+
+**Tools**
+
+- `propose_allocation`: Generates structured portfolio weightings across equities, fixed income, cash, and alternative asset classes.
+
+---
+
+## Node 4 — Compliance Agent (Evaluator-Optimizer RAG Engine)
+
+**Purpose**
+
+Grounds proposed portfolios against Saudi Capital Market Authority (CMA) legal regulations using dense semantic retrieval and iterative optimization loops.
+
+**Technologies & Tools**
+
+- **RAG Retriever (`search_regulations`)**: Performs dense vector search over chunked CMA regulations using `paraphrase-multilingual-mpnet-base-v2` and ChromaDB.
+- **Evaluator (`evaluate_compliance`)**: Scans portfolio weightings against compliance constraints (e.g., maximum 60% concentration cap in a single asset class).
+- **Optimizer (`optimize_strategy`)**: Adjusts portfolio allocations to resolve detected regulatory breaches.
+
+---
+
+## Node 5 — Human-in-the-Loop (HITL) Interrupt Node
+
+**Purpose**
+
+Pauses graph execution before high-risk operations (e.g., portfolio rebalancing or trade execution) to demand explicitly structured human review.
+
+**Implemented Using**
+
+- LangGraph `interrupt()`
+- `Command(resume=...)`
+
+---
+
+## Node 6 — State Finalization / Termination
+
+**Purpose**
+
+Saves finalized portfolio states to persistent storage if approved, or halts workflow safely if rejected.
+
+---
+
+# 4. State & Memory Management
+
+The application manages dual-layer state persistence using LangGraph Checkpointers and Stores:
+
+## Short-Term Memory (Checkpointer)
+- **Component**: `InMemorySaver` (or SQLite checkpointer)
+- **Role**: Tracks thread-level conversational state, message history, and execution context per active `thread_id`.
+
+## Long-Term Memory (Store)
+- **Component**: `InMemoryStore` (or persistent key-value store)
+- **Role**: Maintains persistent user profiles, historical risk tolerance ratings, and preferences across independent session threads.
+
+### State Variables
+- `messages`: List of conversation messages
+- `risk_profile`: User risk profile metadata
+- `portfolio_draft`: Current proposed asset allocations
+- `compliance_status`: Outcome of CMA evaluation loops
+- `approval_status`: Outcome of HITL review
+
+---
+
+# 5. Human-in-the-Loop (HITL) Workflow
+
+High-risk actions pause automatically using LangGraph's native `interrupt()` function.
+
+```
+                     Execution Pauses at Node
+                                │
+                                ▼
+                   Human Operator Review Prompt
+                                │
+                  ┌─────────────┴─────────────┐
+                  ▼                           ▼
+            Approve Action              Reject Action
+                  │                           │
+                  ▼                           ▼
+     Command(resume={"approved": True})   Command(resume={"approved": False})
+                  │                           │
+                  ▼                           ▼
+          Resume Graph Runs           Cancel Execution
 ```
 
-### **2. Environment Variables (`.env`)**
+---
 
-Create a `.env` file in the root directory:
+# 6. Technologies Used
 
-```env
-# Primary LLM API Key (Google Gemini)
-GEMINI_API_KEY="your-google-gemini-api-key"
+| Component | Technology |
+|------------|------------|
+| Workflow Engine | LangGraph |
+| Multi-Agent Router | `langgraph_supervisor` |
+| LLM Framework | LangChain / LangChain Core |
+| Primary LLM | Google Gemini (`gemini-2.0-flash`) |
+| Vector Database | ChromaDB |
+| Embedding Model | `sentence-transformers/paraphrase-multilingual-mpnet-base-v2` |
+| Market Data APIs | `yfinance`, Tavily Search API |
+| Observability | LangSmith (`LANGCHAIN_TRACING_V2`) |
+| Programming Language | Python 3.10+ |
+| Persistence Layer | LangGraph Saver & Store |
 
-# Real-Time Web Search API Key
-TAVILY_API_KEY="your-tavily-api-key"
+---
 
-# LangSmith Tracing
-LANGCHAIN_TRACING_V2="true"
-LANGCHAIN_API_KEY="your-langchain-api-key"
-LANGCHAIN_PROJECT="tharwa-financial-agent"
+# 7. Project Structure
+
+```
+tharwa-financial-agent/
+│── tharwa/
+│   ├── __init__.py
+│   ├── graph.py               # Main LangGraph multi-agent graph definition
+│   ├── agents/                # Supervisor, Portfolio, Market, & Compliance agent implementations
+│   ├── tools/                 # Financial metrics, Tavily search, and RAG retrieval tools
+│   ├── config.py              # System hyperparameter and model configs
+│   └── state.py               # Pydantic schemas and state definitions
+│── data/
+│   └── cma_regulations/       # Saudi Capital Market Authority PDF/text legal docs
+│── vectorstore/               # Persisted ChromaDB vector embeddings
+│── project.ipynb              # Execution and evaluation Jupyter Notebook
+│── README.md                  # Project overview and metadata
+│── Technical_Document.md      # Full architecture technical specification
+│── Dockerfile                 # Containerization instructions
+│── docker-compose.yml         # Container orchestration configuration
+│── requirements.txt           # Python dependency locks
 ```
 
-### **3. Model & Hyperparameter Settings (`config.py`)**
+---
+
+# 8. Deployment
+
+The application includes production deployment configurations for containerized setups.
+
+**Deployment Artifacts:**
+- `Dockerfile`: Multi-stage Python build setup
+- `docker-compose.yml`: Services setup for graph engine, local Chroma vector store, and API endpoints
+- `requirements.txt`: Environment package locks
+
+---
+
+# 9. Configuration
+
+Core system parameters defined in `config.py`:
 
 ```python
 # LLM & Embedding Settings
 LLM_MODEL = "gemini-2.0-flash"
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 
-# RAG & Chunking Parameters
+# RAG Parameters
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 150
 TOP_K_RETRIEVAL = 4
@@ -131,27 +259,30 @@ MAX_OPTIMIZATION_ROUNDS = 3           # Limit for Evaluator-Optimizer feedback l
 
 ---
 
-## 🚀 Usage Example (Standard & HITL Resume)
+# 10. Execution Flow
 
-```python
-from langgraph.types import Command
-from tharwa.graph import app
+1. **User Request**: User submits a financial request (e.g., *"Propose a growth portfolio and check CMA compliance"*).
+2. **Supervisor Routing**: The Supervisor Agent evaluates intent and hands off execution to the Portfolio or Market Analysis Agent.
+3. **Draft Generation**: Portfolio Agent generates initial asset weightings based on user risk parameters.
+4. **Evaluator-Optimizer RAG**: Compliance Agent retrieves relevant CMA rules via ChromaDB, checks for concentration breaches, and iteratively corrects portfolio weightings if needed.
+5. **HITL Interruption**: Graph execution hits `interrupt()`, awaiting human compliance officer review.
+6. **Command Resume**: Human operator sends a `Command(resume=...)` payload.
+7. **Finalization / Termination**: Approved plans are logged to long-term memory and returned; rejected plans halt safely.
 
-# 1. Start execution with thread configuration
-config = {"configurable": {"thread_id": "user_session_001"}}
-input_message = {
-    "messages": [
-        {"role": "user", "content": "Propose an aggressive growth portfolio and verify it against CMA rules."}
-    ]
-}
+---
 
-# Stream graph until interrupt
-for event in app.stream(input_message, config=config):
-    print("State execution event:", event)
+# 11. Production Readiness & Guardrails
 
-# 2. Resume execution after Human Review
-resume_command = Command(resume={"approved": True, "notes": "Approved by supervisor."})
-final_result = app.invoke(resume_command, config=config)
+- **Observability**: Complete end-to-end trace logging configured via LangSmith (`LANGCHAIN_TRACING_V2`).
+- **Transient Error Resilience**: Configured with `RetryPolicy(max_attempts=3, backoff_factor=2.0)` on remote API tasks.
+- **Regulatory Guardrails**: Strict concentration caps preventing algorithmically generated compliance violations.
+- **State Isolation**: Short-term conversational checkpoints isolated per `thread_id` with cross-thread persistent user stores.
 
-print("Final Output:", final_result)
-```
+---
+
+# 12. Future Improvements
+
+- Direct integration with Tadawul (Saudi Exchange) live streaming ticker APIs.
+- Production PostgreSQL + `pgvector` store for scalable multi-tenant RAG and checkpointer storage.
+- Automated generation of Arabic regulatory audit reports in PDF format.
+- Voice-activated input/output interface support using Gemini multi-modal capabilities.
