@@ -71,9 +71,9 @@ ___
   
 ___
 ## Team 
-- Sarah Al Sa’ed
 - Noura Alfaadhel
+- Sarah Al Sa’ed
+- Reema Alhawassi
 - Joud Aldawsari
 - Norah AlJuwair
-- Reema 
 
