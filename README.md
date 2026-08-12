@@ -44,11 +44,11 @@ Final Recommendation
 Tharwa is an educational project built for a capstone assignment. It is not a licensed financial advisory service, and its output should not be treated as professional investment advice.
 
 ## Team
-- Sarah Al Sa'ed
 - Noura Alfaadhel
 - Joud Aldawsari
+- Reema Alhawassi
+- Sarah Al Sa'ed
 - Norah Al Juwair
-- Reema
 
 ## Program Attribution 
 - **Course :** Buliding Agentic AI System 
