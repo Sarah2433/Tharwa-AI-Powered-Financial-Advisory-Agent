@@ -51,8 +51,8 @@ Tharwa is an educational project built for a capstone assignment. It is not a li
 - Reema
 
 ## Program Attribution 
--**Course :** Buliding Agentic AI System 
--**Trainer :** Mohammed Albelad
--**Presented by :** SDAIA Academy 
+- **Course :** Buliding Agentic AI System 
+- **Trainer :** Mohammed Albelad
+- **Presented by :** SDAIA Academy 
 
 SDAIA Academy GitHub :
