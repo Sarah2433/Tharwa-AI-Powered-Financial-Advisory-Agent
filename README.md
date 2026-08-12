@@ -66,6 +66,13 @@ ___
 - **Robust Error Handling & Retries:** Implements automatic recovery policies for connection failures and transient API errors.
 ___
 
+## Program Attribution 
+- **Program :** Building Agentic AI Systems
+- **Trainer :** Mohammed Albelad
+- **Presented By :** SDAIA Academy
 
+  SDAIA Academy GitHub :
+  https://github.com/SDAIAAcademy
+  
 
 
